@@ -76,7 +76,7 @@ function authorization(): int
     return $userToken['user_id'];
 }
 
-function upload($file, $type, $name, $size, $dir): array
+function upload($file, $type, $name, $size, $folder): array
 {
     $format = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
@@ -84,28 +84,26 @@ function upload($file, $type, $name, $size, $dir): array
         $imgFormats = ['png', 'jpg'];
         if (!in_array($format, $imgFormats)) {
             http_response_code(400);
-            return ['status' => 'File Format Error', 'message' => 'پسوند فایل نا معتبر است', 'format' => strtoupper(implode(', ', $imgFormats))];
+            exit(json_encode(['error' => 'File Format Error', 'message' => 'پسوند فایل نا معتبر است', 'format' => strtoupper(implode(', ', $imgFormats))]));
         }
     }
 
     if ($file['size'] > $size) {
         http_response_code(400);
         $fileSize = number_format($file['size'] / (1024 * 1024), 2);
-        return ['error' => 'File Big', 'message' => 'عکس شما بیشتر از ۱ مگابایت است', 'fileSize' => $fileSize];
+        exit(json_encode(['error' => 'File Big', 'message' => 'عکس شما بیشتر از ۱ مگابایت است', 'fileSize' => $fileSize]));
     }
 
     if ($file['error'] !== UPLOAD_ERR_OK) {
         http_response_code(500);
-        return ['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است: ' . $file['error']];
+        exit(json_encode(['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است: ' . $file['error']]));
     }
 
-    $imgDir = '../uploads/users-avatar/';
-    $dir = $imgDir . $name . '.' . $format;
-    if (!(move_uploaded_file($file['tmp_name'], $dir))) {
+    if (!(move_uploaded_file($file['tmp_name'], "../uploads/$folder/$name.$format"))) {
         http_response_code(500);
-        return ['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است'];
+        exit(json_encode(['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است']));
     }
-    return ['message' => 'فایل با موفقیت آپلود شد', 'url' => UploadAvatarUrl . $name . '.' . $format];
+    return ['url' => UploadAvatarUrl . $name . '.' . $format];
 }
 
 function sendEmail($userEmail, $subject, $body, $altBody = ''): array

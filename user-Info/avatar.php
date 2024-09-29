@@ -6,4 +6,12 @@ postMethod();
 
 $avatar = $_FILES['avatar'] ?? '';
 
-if (!(empty($avatar))) exit(json_encode(upload($avatar, 'image', $id, 1024 * 1024)));
+$id = authorization();
+
+nullCheck($avatar, 'avatar');
+
+$upload = upload($avatar, 'image', $id, 1024 * 1024, 'avatars');
+
+$updateAvatar = $pdo->prepare('UPDATE user SET avatar = ? WHERE id = ?');
+if (!($updateAvatar->execute([$upload['url'], $id]))) exit(json_encode(['error' => 'avatar Error', 'message' => 'تغییر آواتار با مشکل مواجه شد']));
+exit(json_encode(['message' => 'آواتار با موفقیت تغییر کرد', 'avatar' => $upload['url']]));

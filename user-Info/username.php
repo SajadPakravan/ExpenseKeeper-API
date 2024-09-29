@@ -4,7 +4,6 @@ include '../tools/db_connect.php';
 
 postMethod();
 
-$response = [];
 $username = $_POST['username'] ?? '';
 
 $id = authorization();
@@ -18,4 +17,4 @@ if ($checkUsername->fetch()) exit(json_encode(['error' => 'Username Used', 'mess
 $updateUsername = $pdo->prepare('UPDATE users_auth SET username = ? WHERE user_id = ?');
 
 if (!($updateUsername->execute([$username, $id]))) exit(json_encode(['error' => 'Username Error', 'message' => 'تغییر نام کاربری با مشکل مواجه شد']));
-exit(json_encode(['message' => 'نام کاربری با موفقیت تغییر کرد']));
+exit(json_encode(['message' => 'نام کاربری با موفقیت تغییر کرد', 'username' => $username]));
