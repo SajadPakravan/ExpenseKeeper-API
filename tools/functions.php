@@ -76,7 +76,7 @@ function authorization(): int
     return $userToken['user_id'];
 }
 
-function upload($file, $type, $name, $size): array
+function upload($file, $type, $name, $size, $dir): array
 {
     $format = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
@@ -105,7 +105,7 @@ function upload($file, $type, $name, $size): array
         http_response_code(500);
         return ['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است'];
     }
-    return ['message' => 'فایل آپلود شد <> ' . UploadAvatarUrl . $name . '.' . $format];
+    return ['message' => 'فایل با موفقیت آپلود شد', 'url' => UploadAvatarUrl . $name . '.' . $format];
 }
 
 function sendEmail($userEmail, $subject, $body, $altBody = ''): array

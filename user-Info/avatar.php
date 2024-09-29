@@ -1,8 +1,9 @@
 <?php
+global $pdo;
+include '../tools/db_connect.php';
+
+postMethod();
 
 $avatar = $_FILES['avatar'] ?? '';
-function editAvatar($avatar, int $id): void
-{
-    global $response;
-    if (!(empty($avatar))) $response += ['avatar' => upload($avatar, 'image', $id, 1024 * 1024)];
-}
+
+if (!(empty($avatar))) exit(json_encode(upload($avatar, 'image', $id, 1024 * 1024)));
