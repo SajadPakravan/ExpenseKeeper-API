@@ -118,11 +118,11 @@ function sendEmailCode($email, $code): array
         $mail->Password = PassEmail;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
-        $mail->setFrom('info@yademansystem.ir', 'Expense Keeper | هزینه بان');
+        $mail->setFrom('info@yademansystem.ir', 'Expense Keeper');
         $mail->addAddress($email);
         $mail->Subject = 'Email Verification Code';
         $mail->Body = str_replace('{{code}}', $code, $bodyView);
-        $mail->AltBody = '888888888888888';
+        $mail->AltBody = $code;
         $mail->send();
         return ['status' => true];
     } catch (Exception $e) {
