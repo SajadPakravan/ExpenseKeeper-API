@@ -10,6 +10,7 @@ $newPass = $_POST['new-password'] ?? '';
 $id = authorization();
 
 nullCheck($currentPass, 'current-password');
+nullCheck($newPass, 'new-password');
 
 $user = $pdo->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $user->execute([$id]);
