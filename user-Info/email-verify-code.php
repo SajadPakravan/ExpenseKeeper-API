@@ -14,7 +14,7 @@ $id = authorization();
 nullCheck($email, 'email');
 nullCheck($code, 'code');
 
-$query = $pdo->prepare('SELECT * FROM users_verify_code WHERE date = ? AND code = ?');
+$query = $pdo->prepare('SELECT * FROM users_verify_code WHERE data = ? AND code = ?');
 $query->execute([$email, $code]);
 
 if ($query->fetch()) {
