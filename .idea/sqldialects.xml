@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/authentication/authentication.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/authentication/confirm_code.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/expire_token.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/authentication/expire_verify_code.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/sign-in.php" dialect="GenericSQL" />
@@ -10,8 +8,11 @@
     <file url="file://$PROJECT_DIR$/tools/create_tables.php" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/tools/functions.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user-Info/avatar.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user-Info/email-verify-code.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user-Info/email.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user-Info/name.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user-Info/password.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user-Info/phone-verify-code.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user-Info/username.php" dialect="GenericSQL" />
   </component>
 </project>

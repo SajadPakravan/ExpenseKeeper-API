@@ -21,11 +21,11 @@ if ($auth) {
         createToken($auth['user_id']);
     } else {
         http_response_code(400);
-        $response = ['status' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
+        $response = ['error' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
         exit(json_encode($response));
     }
 } else {
     http_response_code(400);
-    $response = ['status' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
+    $response = ['error' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
     exit(json_encode($response));
 }

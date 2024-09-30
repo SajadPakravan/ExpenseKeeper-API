@@ -2,7 +2,6 @@
 
 use Random\RandomException;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require 'PHPMailer/src/Exception.php';
@@ -106,11 +105,12 @@ function upload($file, $type, $name, $size, $folder): array
     return ['url' => UploadAvatarUrl . $name . '.' . $format];
 }
 
-function sendEmail($userEmail, $subject, $body, $altBody = ''): array
+function sendEmailCode($email, $code): array
 {
-    $mail = new PHPMailer(true);
-
+    date_default_timezone_set('Asia/Tehran');
+    $bodyView = file_get_contents('../views/email-verify-code-view.html');
     try {
+        $mail = new PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = HostEmail;
         $mail->SMTPAuth = true;
@@ -118,18 +118,32 @@ function sendEmail($userEmail, $subject, $body, $altBody = ''): array
         $mail->Password = PassEmail;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
-
-        $mail->setFrom('info@yademansystem.ir', 'Yademan System');
-        $mail->addAddress($userEmail);
-
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body = $body;
-        $mail->AltBody = $altBody;
-
+        $mail->setFrom('info@yademansystem.ir', 'Expense Keeper | هزینه بان');
+        $mail->addAddress($email);
+        $mail->Subject = 'Email Verification Code';
+        $mail->Body = str_replace('{{code}}', $code, $bodyView);
+        $mail->AltBody = '888888888888888';
         $mail->send();
         return ['status' => true];
     } catch (Exception $e) {
         return ['status' => false, 'error' => $e->getMessage()];
     }
+}
+
+function createVerifyCode($param): array
+{
+    global $pdo;
+
+    $checkParam = $pdo->prepare('SELECT * FROM users_verify_code WHERE data = ?');
+    $checkParam->execute([$param]);
+    $checkParam = $checkParam->fetch();
+    if ($checkParam) {
+        $deleteCode = $pdo->prepare('DELETE FROM users_verify_code WHERE data = ?');
+        $deleteCode->execute([$param]);
+    }
+
+    $code = rand(100000, 999999);
+    $insertCode = $pdo->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
+    $insertCode->execute([$param, $code]);
+    return ['status' => true, 'code' => $code];
 }

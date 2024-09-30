@@ -16,7 +16,7 @@ $checkUsername = $pdo->prepare('SELECT * FROM users_auth WHERE username = ?');
 $checkUsername->execute([$username]);
 
 if ($checkUsername->fetch()) {
-    exit(json_encode(['status' => 'Username Used', 'message' => 'این نام کاربری قبلا استفاده شده']));
+    exit(json_encode(['error' => 'Username Used', 'message' => 'این نام کاربری قبلا استفاده شده']));
 } else {
     $insertUser = $pdo->prepare('INSERT INTO users (name, email, phone, avatar, create_at) VALUES (?, null, null, ?, NOW())');
     if ($insertUser->execute([$name, DefaultAvatarUrl])) {
