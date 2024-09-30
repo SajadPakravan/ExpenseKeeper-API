@@ -31,5 +31,5 @@ if (preg_match('/^09[0-9]{9}$/', $phone)) {
 
     if (curl_errno($ch)) exit(json_encode(['error' => 'Send Code False', 'message' => 'ارسال کد تایید با خطا مواجه شد: ' . curl_error($ch)]));
     curl_close($ch);
-    exit(json_encode(['message' => 'کد تایید به شماره شما با موفقیت ارسال شد' . $response]));
+    exit(json_encode(['message' => 'کد تایید به شماره شما با موفقیت ارسال شد', 'smsCode' => $response]));
 }
