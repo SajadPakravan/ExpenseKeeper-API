@@ -14,7 +14,7 @@ nullCheck($newPass, 'new-password');
 
 $user = $pdo->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $user->execute([$id]);
-$user->fetch();
+$user = $user->fetch();
 
 if (!(password_verify($currentPass, $user['password']))) exit(json_encode(['error' => 'Current Password False', 'message' => 'گذرواژه فعلی نادرست است']));
 $hashPass = password_hash($newPass, PASSWORD_DEFAULT);
