@@ -3,12 +3,8 @@ global $pdo;
 include '../tools/db_connect.php';
 
 setMethod('POST');
-
-$username = $date['username'] ?? '';
-$password = $date['password'] ?? '';
-
-nullCheck($username, 'username');
-nullCheck($password, 'password');
+$username = param('username');
+$password = param('password');
 
 $checkUsername = $pdo->prepare('SELECT * FROM users_auth WHERE username = ?');
 $checkUsername->execute([$username]);

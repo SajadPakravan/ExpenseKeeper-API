@@ -9,16 +9,21 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-$data = json_decode(file_get_contents('php://input'), true);
+#[NoReturn] function setError(int $code, string $error): void
+{
+    http_response_code($code);
+    exit(json_encode(['error' => $error]));
+}
 
 function setMethod(string $method): void
 {
     if (!($_SERVER['REQUEST_METHOD'] === $method)) setError(405, 'Wrong Method');
 }
 
-function nullCheck($param, $paramName): void
+function param($name): string
 {
-    if (empty($param)) setError(400, "$paramName Empty");
+    $data = json_decode(file_get_contents('php://input'), true);
+    return trim($data[$name]) ?? setError(400, "$name Empty");
 }
 
 function createToken($id): string
@@ -67,34 +72,21 @@ function authorization(): int
     return $userToken['user_id'];
 }
 
-function upload($file, $type, $name, $size, $folder): array
+function upload($file, $type, $name, $size, $folder): string
 {
     $format = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
-    if ($type === 'image') {
-        $imgFormats = ['png', 'jpg'];
-        if (!in_array($format, $imgFormats)) {
-            http_response_code(400);
-            exit(json_encode(['error' => 'File Format Error', 'message' => 'پسوند فایل نا معتبر است', 'format' => strtoupper(implode(', ', $imgFormats))]));
-        }
-    }
+    if ($type === 'image' && (!in_array($format, ['png', 'jpg']))) setError(400, 'Image Format Error');
 
     if ($file['size'] > $size) {
-        http_response_code(400);
         $fileSize = number_format($file['size'] / (1024 * 1024), 2);
-        exit(json_encode(['error' => 'File Big', 'message' => 'عکس شما بیشتر از ۱ مگابایت است', 'fileSize' => $fileSize]));
+        setError(400, "File Large | $fileSize MB");
     }
 
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        http_response_code(500);
-        exit(json_encode(['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است: ' . $file['error']]));
-    }
+    if ($file['error'] !== UPLOAD_ERR_OK) setError(500, 'Upload Error | ' . $file['error']);
 
-    if (!(move_uploaded_file($file['tmp_name'], "../uploads/$folder/$name.$format"))) {
-        http_response_code(500);
-        exit(json_encode(['error' => 'Upload Error', 'message' => 'مشکلی در آپلود فایل پیش آمده است']));
-    }
-    return ['url' => UploadAvatarUrl . $name . '.' . $format];
+    if (!(move_uploaded_file($file['tmp_name'], "../uploads/$folder/$name.$format"))) setError(500, 'Upload Error');
+    return UploadAvatarUrl . "$name.$format";
 }
 
 function sendEmailCode($email, $code): array
@@ -138,10 +130,4 @@ function createVerifyCode($param): array
     $insertCode = $pdo->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
     $insertCode->execute([$param, $code]);
     return ['status' => true, 'code' => $code];
-}
-
-#[NoReturn] function setError(int $code, string $error): void
-{
-    http_response_code($code);
-    exit(json_encode(['error' => $error]));
 }

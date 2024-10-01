@@ -2,13 +2,9 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-setMethod();
-
-$username = $_POST['username'] ?? '';
-
+setMethod('POST');
 $id = authorization();
-
-nullCheck($username, 'username');
+$username = param('username');
 
 $checkUsername = $pdo->prepare('SELECT * FROM users_auth WHERE username = ?');
 $checkUsername->execute([$username]);
