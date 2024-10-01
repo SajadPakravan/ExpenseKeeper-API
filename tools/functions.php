@@ -1,5 +1,6 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
 use Random\RandomException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -8,23 +9,19 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-function postMethod(): void
+$data = json_decode(file_get_contents('php://input'), true);
+
+function setMethod(string $method): void
 {
-    if (!($_SERVER['REQUEST_METHOD'] === 'POST')) {
-        http_response_code(405);
-        exit(json_encode(['error' => 'Wrong Method', 'message' => 'از متد POST استفاده کنید']));
-    }
+    if (!($_SERVER['REQUEST_METHOD'] === $method)) setError(405, 'Wrong Method');
 }
 
 function nullCheck($param, $paramName): void
 {
-    if (empty($param)) {
-        http_response_code(400);
-        exit(json_encode(['error' => "$paramName Empty", 'message' => "$paramName وارد نشده است"]));
-    }
+    if (empty($param)) setError(400, "$paramName Empty");
 }
 
-function createToken($id): array
+function createToken($id): string
 {
     global $pdo;
     $checkUserToken = $pdo->prepare('SELECT * FROM users_token WHERE user_id = ?');
@@ -41,8 +38,8 @@ function createToken($id): array
     }
     $expire_at = time() + (60 * 60);
     $insertToken = $pdo->prepare('INSERT INTO users_token (user_id, token, expire_at) VALUES (?, ?, FROM_UNIXTIME(?))');
-    if ($insertToken->execute([$id, $token, $expire_at])) return ['status' => true, 'token' => $token];
-    return ['status' => false];
+    $insertToken->execute([$id, $token, $expire_at]);
+    return $token;
 }
 
 function authorization(): int
@@ -141,4 +138,10 @@ function createVerifyCode($param): array
     $insertCode = $pdo->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
     $insertCode->execute([$param, $code]);
     return ['status' => true, 'code' => $code];
+}
+
+#[NoReturn] function setError(int $code, string $error): void
+{
+    http_response_code($code);
+    exit(json_encode(['error' => $error]));
 }

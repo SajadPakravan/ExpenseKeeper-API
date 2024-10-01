@@ -2,7 +2,7 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-postMethod();
+setMethod();
 
 $currentPass = $_POST['current-password'] ?? '';
 $newPass = $_POST['new-password'] ?? '';

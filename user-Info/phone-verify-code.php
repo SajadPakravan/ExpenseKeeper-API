@@ -4,7 +4,7 @@ include '../tools/db_connect.php';
 
 $response = '';
 
-postMethod();
+setMethod();
 
 $phone = $_POST['phone'] ?? '';
 $code = $_POST['code'] ?? '';

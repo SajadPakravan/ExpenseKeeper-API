@@ -2,7 +2,7 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-postMethod();
+setMethod();
 
 $phone = $_POST['phone'] ?? '';
 

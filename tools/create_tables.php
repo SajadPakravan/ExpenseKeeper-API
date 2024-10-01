@@ -38,7 +38,7 @@ function createTableUsers($pdo): string
         email VARCHAR(30) UNIQUE NULL,
         phone CHAR(11) UNIQUE NULL,
         avatar VARCHAR(255) NOT NULL,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci');
     return 'Created Table (users)';
 }
