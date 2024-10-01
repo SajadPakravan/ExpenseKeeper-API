@@ -24,7 +24,7 @@ function nullCheck($param, $paramName): void
     }
 }
 
-function createToken($id): void
+function createToken($id): array
 {
     global $pdo;
     $checkUserToken = $pdo->prepare('SELECT * FROM users_token WHERE user_id = ?');
@@ -41,13 +41,8 @@ function createToken($id): void
     }
     $expire_at = time() + (60 * 60);
     $insertToken = $pdo->prepare('INSERT INTO users_token (user_id, token, expire_at) VALUES (?, ?, FROM_UNIXTIME(?))');
-
-    if ($insertToken->execute([$id, $token, $expire_at])) {
-        $response = ['status' => 'SignIn True', 'message' => 'ورود با موفقیت انجام شد', 'token' => $token];
-    } else {
-        $response = ['status' => 'Create Token Error', 'message' => 'خطا در ایجاد توکن'];
-    }
-    exit(json_encode($response));
+    if ($insertToken->execute([$id, $token, $expire_at])) return ['status' => true, 'token' => $token];
+    return ['status' => false];
 }
 
 function authorization(): int

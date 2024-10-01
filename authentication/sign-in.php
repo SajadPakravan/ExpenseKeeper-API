@@ -18,14 +18,11 @@ if ($auth) {
     if (password_verify($password, $auth['password'])) {
         $updateAuth = $pdo->prepare('UPDATE users_auth SET status = 1, login_time = NOW() WHERE username = ?');
         $updateAuth->execute([$username]);
-        createToken($auth['user_id']);
-    } else {
-        http_response_code(400);
-        $response = ['error' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
-        exit(json_encode($response));
+        $token = createToken($auth['user_id']);
+        if ($token['status']) exit(json_encode(['message' => 'ورود شما با موفقیت انجام شد', 'token' => $token['token']]));
+        http_response_code(500);
+        exit(json_encode(['error' => 'SignIn False', 'message' => 'ورود شما با مشکل مواجه شد']));
     }
-} else {
-    http_response_code(400);
-    $response = ['error' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست'];
-    exit(json_encode($response));
 }
+http_response_code(400);
+exit(json_encode(['error' => 'Invalid Inputs', 'message' => 'نام کاربری یا گذرواژه صحیح نیست']));
