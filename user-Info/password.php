@@ -2,21 +2,16 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-setMethod();
-
-$currentPass = $_POST['current-password'] ?? '';
-$newPass = $_POST['new-password'] ?? '';
-
+setMethod('POST');
 $id = authorization();
-
-nullCheck($currentPass, 'current-password');
-nullCheck($newPass, 'new-password');
+$currentPass = param('current-password');
+$newPass = param('new-password');
 
 $user = $pdo->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $user->execute([$id]);
 $user = $user->fetch();
 
-if (!(password_verify($currentPass, $user['password']))) exit(json_encode(['error' => 'Current Password False', 'message' => 'گذرواژه فعلی نادرست است']));
+if (!(password_verify($currentPass, $user['password']))) setError(400,'Incorrect Current Password');
 $hashPass = password_hash($newPass, PASSWORD_DEFAULT);
 $updatePass = $pdo->prepare('UPDATE users_auth SET password = ? WHERE user_id = ?');
 $updatePass->execute([$hashPass, $id]);
