@@ -2,14 +2,10 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-setMethod();
-
-$name = $_POST['name'] ?? '';
-
+setMethod('POST');
 $id = authorization();
-
-nullCheck($name, 'name');
+$name = param('name');
 
 $updateName = $pdo->prepare('UPDATE users SET name = ? WHERE id = ?');
-if (!($updateName->execute([$name, $id]))) exit(json_encode(['error' => 'name Error', 'message' => 'تغییر نام با مشکل مواجه شد']));
+$updateName->execute([$name, $id]);
 exit(json_encode(['message' => 'نام با موفقیت تغییر کرد', 'name' => $name]));

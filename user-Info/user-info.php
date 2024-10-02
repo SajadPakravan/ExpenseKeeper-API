@@ -2,8 +2,7 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-getMethod();
-
+setMethod('GET');
 $id = authorization();
 
 $user = $pdo->prepare('SELECT * FROM users WHERE id = ?');
@@ -14,7 +13,7 @@ $auth = $pdo->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $auth->execute([$id]);
 $auth = $auth->fetch();
 
-if ($user && $auth) exit(json_encode([
+exit(json_encode([
     'id' => $user['id'],
     'username' => $auth['username'],
     'name' => $user['name'],
@@ -24,4 +23,3 @@ if ($user && $auth) exit(json_encode([
     'create_at' => $user['create_at'],
     'login_time' => $auth['login_time']
 ]));
-exit(json_encode(['error' => 'Get Info False', 'message' => 'دریافت اطلاعات با مشکل موجه شد']));

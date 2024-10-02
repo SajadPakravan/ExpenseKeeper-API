@@ -2,13 +2,9 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-setMethod();
-
-$phone = $_POST['phone'] ?? '';
-
+setMethod('POST');
 $id = authorization();
-
-nullCheck($phone, 'phone');
+$phone = param('phone');
 
 if (preg_match('/^09[0-9]{9}$/', $phone)) {
     $verifyCode = createVerifyCode($phone);
@@ -18,7 +14,7 @@ if (preg_match('/^09[0-9]{9}$/', $phone)) {
         'AccessHash' => '8377d671-44e4-4560-ab25-d6d3e9e1b267',
         'Mobile' => $phone,
         'PatternId' => '1348bcee-e71a-4556-a304-d6ef6843da96',
-        'token1' => $verifyCode['code']
+        'token1' => $verifyCode
     );
 
     $ch = curl_init();
@@ -29,7 +25,7 @@ if (preg_match('/^09[0-9]{9}$/', $phone)) {
 
     $response = curl_exec($ch);
 
-    if (curl_errno($ch)) exit(json_encode(['error' => 'Send Code False', 'message' => 'ارسال کد تایید با خطا مواجه شد: ' . curl_error($ch)]));
+    if (curl_errno($ch)) setError(500, 'Send Code False | ' . curl_error($ch));
     curl_close($ch);
     exit(json_encode(['message' => 'کد تایید به شماره شما با موفقیت ارسال شد', 'smsCode' => $response]));
 }
