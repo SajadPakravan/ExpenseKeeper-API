@@ -9,8 +9,8 @@ $username = param('username');
 $checkUsername = $pdo->prepare('SELECT * FROM users_auth WHERE username = ?');
 $checkUsername->execute([$username]);
 
-if ($checkUsername->fetch()) exit(json_encode(['error' => 'Username Used', 'message' => 'این نام کاربری قبلا استفاده شده است']));
-$updateUsername = $pdo->prepare('UPDATE users_auth SET username = ? WHERE user_id = ?');
+if ($checkUsername->fetch()) setError(400, 'Username Used');
 
-if (!($updateUsername->execute([$username, $id]))) exit(json_encode(['error' => 'Username Error', 'message' => 'تغییر نام کاربری با مشکل مواجه شد']));
-exit(json_encode(['message' => 'نام کاربری با موفقیت تغییر کرد', 'username' => $username]));
+$updateUsername = $pdo->prepare('UPDATE users_auth SET username = ? WHERE user_id = ?');
+$updateUsername->execute([$username, $id]);
+exit(json_encode(['message' => 'نام کاربری شما با موفقیت تغییر کرد', 'username' => $username]));
