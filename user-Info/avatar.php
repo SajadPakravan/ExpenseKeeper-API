@@ -10,4 +10,4 @@ if (empty($avatar)) setError(400, 'avatar Empty');
 $upload = upload($avatar, 'image', $id, 1024 * 1024, 'avatars');
 $updateAvatar = $pdo->prepare('UPDATE users SET avatar = ? WHERE id = ?');
 $updateAvatar->execute([$upload, $id]);
-exit(json_encode(['message' => 'آواتار با موفقیت تغییر کرد', 'avatar' => $upload]));
+exit(json_encode(['message' => 'آواتار شما با موفقیت تغییر کرد', 'avatar' => $upload]));

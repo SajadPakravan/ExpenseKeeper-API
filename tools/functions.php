@@ -24,7 +24,7 @@ function param($name): string
     $data = json_decode(file_get_contents('php://input'), true);
     $value = $data[$name] ?? '';
     $value = trim($value);
-    if(empty($value)) setError(400, "$name Empty");
+    if (empty($value)) setError(400, "$name Empty");
     return $value;
 }
 
@@ -54,10 +54,7 @@ function authorization(): int
     global $pdo;
     $headers = getallheaders();
 
-    if (!isset($headers['Authorization'])) {
-        http_response_code(401);
-        exit(json_encode(['error' => 'Authorization Null', 'message' => 'توکن ارسال نشده است']));
-    }
+    if (!isset($headers['Authorization'])) setError(401, 'Authorization Null');
 
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
@@ -65,11 +62,7 @@ function authorization(): int
     $checkToken = $pdo->prepare('SELECT * FROM users_token WHERE token = ? AND expire_at > NOW()');
     $checkToken->execute([$token]);
     $userToken = $checkToken->fetch();
-
-    if (!$userToken) {
-        http_response_code(401);
-        exit(json_encode(['error' => 'Unauthorized', 'message' => 'توکن معتبر نیست']));
-    }
+    if (!$userToken) setError(401, 'Unauthorized');
 
     return $userToken['user_id'];
 }
