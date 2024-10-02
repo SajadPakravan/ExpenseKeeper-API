@@ -22,7 +22,10 @@ function setMethod(string $method): void
 function param($name): string
 {
     $data = json_decode(file_get_contents('php://input'), true);
-    return trim($data[$name]) ?? setError(400, "$name Empty");
+    $value = $data[$name] ?? '';
+    $value = trim($value);
+    if(empty($value)) setError(400, "$name Empty");
+    return $value;
 }
 
 function createToken($id): string
