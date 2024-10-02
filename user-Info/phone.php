@@ -29,3 +29,4 @@ if (preg_match('/^09[0-9]{9}$/', $phone)) {
     curl_close($ch);
     exit(json_encode(['message' => 'کد تایید به شماره شما با موفقیت ارسال شد', 'smsCode' => $response]));
 }
+setError(400, 'Invalid Phone');
