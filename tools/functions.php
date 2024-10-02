@@ -116,7 +116,10 @@ function createVerifyCode($param): int
     $checkParam = $pdo->prepare('SELECT * FROM users_verify_code WHERE data = ?');
     $checkParam->execute([$param]);
     $checkParam = $checkParam->fetch();
-    if ($checkParam) $pdo->prepare('DELETE FROM users_verify_code WHERE data = ?')->execute([$param]);
+    if ($checkParam) {
+        $deleteCode = $pdo->prepare('DELETE FROM users_verify_code WHERE data = ?');
+        $deleteCode->execute([$param]);
+    }
 
     $code = rand(100000, 999999);
     $insertCode = $pdo->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');

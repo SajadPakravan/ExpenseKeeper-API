@@ -16,6 +16,6 @@ $query->execute([$email, $code]);
 if ($query->fetch()) {
     $updateEmail = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
     $updateEmail->execute([$email, $id]);
-    exit(json_encode(['message' => 'ایمیل با موفقیت تغییر کرد', 'email' => $email]));
+    exit(json_encode(['message' => 'ایمیل شما با موفقیت تغییر کرد', 'email' => $email]));
 }
 setError(400, 'Invalid Verify Code');
