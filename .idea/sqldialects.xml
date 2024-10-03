@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/authentication/sign-in.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/sign-up.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/tools/create_tables.php" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/tools/database.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/tools/functions.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user/avatar.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/user/email-verify-code.php" dialect="GenericSQL" />

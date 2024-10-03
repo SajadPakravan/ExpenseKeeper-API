@@ -1,6 +1,6 @@
 <?php
 //global $pdo;
-//include '../tools/db_connect.php';
+//include '../tools/database.php';
 //
 //try {
 //    $updateQuery = 'UPDATE authentication a JOIN tokens t ON a.id = t.user_id SET a.status = 0, a.signout_time = NOW() WHERE t.expire_time < NOW()';

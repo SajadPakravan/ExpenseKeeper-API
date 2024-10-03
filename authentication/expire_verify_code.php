@@ -1,6 +1,6 @@
 <?php
 //global $db;
-//include '../tools/db_connect.php';
+//include '../tools/database.php';
 //
 //$deleteQuery = 'DELETE FROM users_verify_code WHERE expire_at < NOW()';
 //$delete = $db->prepare($deleteQuery);
