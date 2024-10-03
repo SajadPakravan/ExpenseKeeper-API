@@ -126,3 +126,42 @@ function createVerifyCode($param): int
     $insertCode->execute([$param, $code]);
     return $code;
 }
+
+function checkPhone(string $phone): void
+{
+    if (preg_match('/^09[0-9]{9}$/', $phone)) {
+        $verifyCode = createVerifyCode($phone);
+
+        $url = 'https://smspanel.trez.ir/SendPatternCodeWithUrl.ashx';
+        $data = array(
+            'AccessHash' => '8377d671-44e4-4560-ab25-d6d3e9e1b267',
+            'Mobile' => $phone,
+            'PatternId' => '1348bcee-e71a-4556-a304-d6ef6843da96',
+            'token1' => $verifyCode
+        );
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) setError(500, 'Send Code False | ' . curl_error($ch));
+        curl_close($ch);
+        exit(json_encode(['message' => 'کد تایید به شماره شما با موفقیت ارسال شد', 'smsCode' => $response]));
+    }
+    setError(400, 'Invalid Phone');
+}
+
+function checkEmail($email): void
+{
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $verifyCode = createVerifyCode($email);
+        $result = sendEmailCode($email, $verifyCode);
+        if ($result['status']) exit(json_encode(['message' => 'کد تایید به ایمیل شما با موفقیت ارسال شد']));
+        setError(503, 'Send Code False | ' . $result['error']);
+    }
+    setError(400, 'Invalid Email');
+}

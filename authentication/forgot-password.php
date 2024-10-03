@@ -1,7 +1,6 @@
 <?php
 global $pdo;
-include '../user/email.php';
-include '../user/phone.php';
+include '../tools/db_connect.php';
 
 setMethod('POST');
 $data = param('data');

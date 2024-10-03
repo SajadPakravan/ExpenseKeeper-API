@@ -7,14 +7,3 @@ authorization();
 $email = param('email');
 
 checkEmail($email);
-
-function checkEmail($email): void
-{
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $verifyCode = createVerifyCode($email);
-        $result = sendEmailCode($email, $verifyCode);
-        if ($result['status']) exit(json_encode(['message' => 'کد تایید به ایمیل شما با موفقیت ارسال شد']));
-        setError(503, 'Send Code False | ' . $result['error']);
-    }
-    setError(400, 'Invalid Email');
-}
