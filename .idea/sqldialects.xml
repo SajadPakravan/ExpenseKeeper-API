@@ -7,13 +7,13 @@
     <file url="file://$PROJECT_DIR$/authentication/sign-up.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/tools/create_tables.php" dialect="MariaDB" />
     <file url="file://$PROJECT_DIR$/tools/functions.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/avatar.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/email-verify-code.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/email.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/name.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/password.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/phone-verify-code.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/user-info.php" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/user-Info/username.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/avatar.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/email-verify-code.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/email.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/name.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/password.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/phone-verify-code.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/user-info.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/user/username.php" dialect="GenericSQL" />
   </component>
 </project>
