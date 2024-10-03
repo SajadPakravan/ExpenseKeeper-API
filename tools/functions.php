@@ -151,3 +151,15 @@ function createVerifyCode($param): int
     $insertCode->execute([$param, $code]);
     return $code;
 }
+
+function checkEmail($email): bool
+{
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) return true;
+    return false;
+}
+
+function checkPhone($phone): bool
+{
+    if (preg_match('/^09[0-9]{9}$/', $phone)) return true;
+    return false;
+}

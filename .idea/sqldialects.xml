@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/authentication/confirm-verify-code.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/expire_token.php" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/authentication/expire_verify_code.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/authentication/forgot-password/confirm-verify-code.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/sign-in.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/authentication/sign-up.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/tools/create_tables.php" dialect="MariaDB" />

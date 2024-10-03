@@ -15,4 +15,4 @@ if (!(password_verify($currentPass, $user['password']))) setError(400,'Incorrect
 $hashPass = password_hash($newPass, PASSWORD_DEFAULT);
 $updatePass = $pdo->prepare('UPDATE users_auth SET password = ? WHERE user_id = ?');
 $updatePass->execute([$hashPass, $id]);
-exit(json_encode(['message' => 'گذرواژه با موفقیت تغییر کرد']));
+exit(json_encode(['message' => 'گذرواژه شما با موفقیت تغییر کرد']));

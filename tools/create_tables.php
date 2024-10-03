@@ -1,6 +1,5 @@
 <?php
-global $pdo;
-include 'db_connect.php';
+include '_init_.php';
 
 $messages = [];
 
