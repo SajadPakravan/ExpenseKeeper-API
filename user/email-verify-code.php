@@ -2,8 +2,6 @@
 global $pdo;
 include '../tools/db_connect.php';
 
-$response = '';
-
 setMethod('POST');
 $id = authorization();
 $data = param('email');
