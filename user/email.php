@@ -6,4 +6,5 @@ setMethod('POST');
 authorization();
 $email = param('email');
 
-checkEmail($email);
+if (filter_var($email, FILTER_VALIDATE_EMAIL)) sendEmailCode($email);
+setError(400, 'Invalid Email');
