@@ -1,4 +1,4 @@
-<Files "_init_.php">
+<FilesMatch "^_init_\.php$">
     Order deny,allow
     Deny from all
-</Files>
+</FilesMatch>

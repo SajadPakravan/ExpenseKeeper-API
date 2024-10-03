@@ -1,9 +1,9 @@
 <?php
-global $pdo;
+global $db;
 include '../tools/db_connect.php';
 
 $deleteQuery = 'DELETE FROM users_verify_code WHERE expire_at < NOW()';
-$delete = $pdo->prepare($deleteQuery);
+$delete = $db->prepare($deleteQuery);
 $delete->execute();
 
 if ($delete->rowCount() === 0) {

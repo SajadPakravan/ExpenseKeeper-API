@@ -1,5 +1,5 @@
 <?php
-global $pdo;
+global $db;
 include '../tools/db_connect.php';
 
 setMethod('POST');

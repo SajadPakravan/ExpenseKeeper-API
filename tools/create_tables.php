@@ -4,25 +4,25 @@ include '_init_.php';
 $messages = [];
 
 try {
-    $messages[] = createTableUsers($pdo);
+    $messages[] = createTableUsers(db());
 } catch (PDOException $e) {
     $messages[] = 'Create Table (users) Error >>> ' . $e->getMessage();
 }
 
 try {
-    $messages[] = createTableUsersAuth($pdo);
+    $messages[] = createTableUsersAuth(db());
 } catch (PDOException $e) {
     $messages[] = 'Create Table (users_auth) Error >>> ' . $e->getMessage();
 }
 
 try {
-    $messages[] = createTableUsersToken($pdo);
+    $messages[] = createTableUsersToken(db());
 } catch (PDOException $e) {
     $messages[] = 'Create Table (users_token) Error >>> ' . $e->getMessage();
 }
 
 try {
-    $messages[] = createTableUsersVerifyCode($pdo);
+    $messages[] = createTableUsersVerifyCode(db());
 } catch (PDOException $e) {
     $messages[] = 'Create Table (users_verify_code) Error >>> ' . $e->getMessage();
 }

@@ -1,9 +1,7 @@
 <?php
-
 use Random\RandomException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
@@ -30,11 +28,10 @@ function param($name): string
 
 function createToken($id): string
 {
-    global $pdo;
-    $checkUserToken = $pdo->prepare('SELECT * FROM users_token WHERE user_id = ?');
+    $checkUserToken = db()->prepare('SELECT * FROM users_token WHERE user_id = ?');
     $checkUserToken->execute([$id]);
     if ($checkUserToken->fetch()) {
-        $deleteToken = $pdo->prepare('DELETE FROM users_token WHERE user_id = ?');
+        $deleteToken = db()->prepare('DELETE FROM users_token WHERE user_id = ?');
         $deleteToken->execute([$id]);
     }
 
@@ -44,14 +41,13 @@ function createToken($id): string
         echo $e;
     }
     $expire_at = time() + (60 * 60);
-    $insertToken = $pdo->prepare('INSERT INTO users_token (user_id, token, expire_at) VALUES (?, ?, FROM_UNIXTIME(?))');
+    $insertToken = db()->prepare('INSERT INTO users_token (user_id, token, expire_at) VALUES (?, ?, FROM_UNIXTIME(?))');
     $insertToken->execute([$id, $token, $expire_at]);
     return $token;
 }
 
 function authorization(): int
 {
-    global $pdo;
     $headers = getallheaders();
 
     if (!isset($headers['Authorization'])) setError(401, 'Authorization Null');
@@ -59,7 +55,7 @@ function authorization(): int
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
 
-    $checkToken = $pdo->prepare('SELECT * FROM users_token WHERE token = ? AND expire_at > NOW()');
+    $checkToken = db()->prepare('SELECT * FROM users_token WHERE token = ? AND expire_at > NOW()');
     $checkToken->execute([$token]);
     $userToken = $checkToken->fetch();
     if (!$userToken) setError(401, 'Unauthorized');
@@ -136,18 +132,16 @@ function sendPhoneCode($phone): void
 
 function createVerifyCode($param): int
 {
-    global $pdo;
-
-    $checkParam = $pdo->prepare('SELECT * FROM users_verify_code WHERE data = ?');
+    $checkParam = db()->prepare('SELECT * FROM users_verify_code WHERE data = ?');
     $checkParam->execute([$param]);
     $checkParam = $checkParam->fetch();
     if ($checkParam) {
-        $deleteCode = $pdo->prepare('DELETE FROM users_verify_code WHERE data = ?');
+        $deleteCode = db()->prepare('DELETE FROM users_verify_code WHERE data = ?');
         $deleteCode->execute([$param]);
     }
 
     $code = rand(100000, 999999);
-    $insertCode = $pdo->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
+    $insertCode = db()->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
     $insertCode->execute([$param, $code]);
     return $code;
 }

@@ -6,4 +6,7 @@ include 'tools/functions.php';
 include 'tools/db_connect.php';
 include 'tools/settings.php';
 
-$pdo = Database::getConnection();
+function db(): PDO
+{
+    return Database::getConnection();
+}

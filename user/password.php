@@ -1,5 +1,5 @@
 <?php
-global $pdo;
+global $db;
 include '../tools/db_connect.php';
 
 setMethod('POST');
@@ -7,12 +7,12 @@ $id = authorization();
 $currentPass = param('current-password');
 $newPass = param('new-password');
 
-$user = $pdo->prepare('SELECT * FROM users_auth WHERE user_id = ?');
+$user = $db->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $user->execute([$id]);
 $user = $user->fetch();
 
 if (!(password_verify($currentPass, $user['password']))) setError(400,'Incorrect Current Password');
 $hashPass = password_hash($newPass, PASSWORD_DEFAULT);
-$updatePass = $pdo->prepare('UPDATE users_auth SET password = ? WHERE user_id = ?');
+$updatePass = $db->prepare('UPDATE users_auth SET password = ? WHERE user_id = ?');
 $updatePass->execute([$hashPass, $id]);
 exit(json_encode(['message' => 'گذرواژه شما با موفقیت تغییر کرد']));

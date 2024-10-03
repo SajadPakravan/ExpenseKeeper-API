@@ -1,5 +1,5 @@
 <?php
-global $pdo;
+global $db;
 include '../tools/db_connect.php';
 
 setMethod('POST');
@@ -7,16 +7,16 @@ $username = param('username');
 $name = param('name');
 $password = param('password');
 
-$checkUsername = $pdo->prepare('SELECT * FROM users_auth WHERE username = ?');
+$checkUsername = $db->prepare('SELECT * FROM users_auth WHERE username = ?');
 $checkUsername->execute([$username]);
 
 if ($checkUsername->fetch()) setError(400, 'Username Used');
 
-$insertUser = $pdo->prepare('INSERT INTO users (name, email, phone, avatar, create_at) VALUES (?, null, null, ?, NOW())');
+$insertUser = $db->prepare('INSERT INTO users (name, email, phone, avatar, create_at) VALUES (?, null, null, ?, NOW())');
 $insertUser->execute([$name, DefaultAvatarUrl]);
 
-$insertAuth = $pdo->prepare('INSERT INTO users_auth (user_id, username, password, login_time, Logout_time, status) VALUES (?, ?, ?, NOW(), null, 1)');
-$userId = $pdo->lastInsertId();
+$insertAuth = $db->prepare('INSERT INTO users_auth (user_id, username, password, login_time, Logout_time, status) VALUES (?, ?, ?, NOW(), null, 1)');
+$userId = $db->lastInsertId();
 $hashPass = password_hash($password, PASSWORD_DEFAULT);
 $insertAuth->execute([$userId, $username, $hashPass]);
 
