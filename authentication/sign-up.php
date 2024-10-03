@@ -6,18 +6,27 @@ $username = param('username');
 $name = param('name');
 $password = param('password');
 
-$checkUsername = db()->prepare('SELECT * FROM users_auth WHERE username = ?');
-$checkUsername->execute([$username]);
+$checkUsername = Database::select(table: 'users_auth', where: 'username = ?', value: [$username]);
+if (!empty($checkUsername)) setError(400, 'Username Used');
 
-if ($checkUsername->fetch()) setError(400, 'Username Used');
+Database::insert(table: 'users', data: [
+    'name' => $name,
+    'email' => null,
+    'phone' => null,
+    'avatar' => DefaultAvatarUrl,
+    'create_at' => date('Y-m-d H:i:s'),
+]);
 
-$insertUser = db()->prepare('INSERT INTO users (name, email, phone, avatar, create_at) VALUES (?, null, null, ?, NOW())');
-$insertUser->execute([$name, DefaultAvatarUrl]);
-
-$insertAuth = db()->prepare('INSERT INTO users_auth (user_id, username, password, login_time, Logout_time, status) VALUES (?, ?, ?, NOW(), null, 1)');
-$userId = db()->lastInsertId();
+$userId = Database::getConnection()->lastInsertId();
 $hashPass = password_hash($password, PASSWORD_DEFAULT);
-$insertAuth->execute([$userId, $username, $hashPass]);
+Database::insert(table: 'users_auth', data: [
+    'user_id' => $userId,
+    'username' => $username,
+    'password' => $hashPass,
+    'login_time' => date('Y-m-d H:i:s'),
+    'Logout_time' => null,
+    'status' => 1,
+]);
 
 $token = createToken($userId);
 exit(json_encode(['message' => 'ثبت‌نام و ورود شما با موفقیت انجام شد', 'token' => $token]));

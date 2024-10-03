@@ -43,29 +43,93 @@ class Database
         }
     }
 
-    public static function insert(string $tableName): void
+    public static function insert(string $table, array $data): void
     {
+        $db = self::getConnection();
 
+        $columns = implode(', ', array_keys($data));
+        $placeholders = implode(', ', array_fill(0, count($data), '?'));
+        $values = array_values($data);
+
+        $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
+
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->execute($values);
+        } catch (PDOException $e) {
+            setError(500, 'Insert Error: ' . $e->getMessage());
+        }
     }
 
-    public static function select(string $tableName): void
+    public static function select(string $table, string $columns = '*', string $where = '', array $value = []): array
     {
+        $db = self::getConnection();
 
+        $sql = "SELECT $columns FROM $table";
+
+        if (!empty($where) && !empty($value)) $sql .= " WHERE $where";
+
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->execute(array_values($value));
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            setError(500, 'Select Error: ' . $e->getMessage());
+            return [];
+        }
     }
 
-    public static function update(string $tableName): void
+    public static function update(string $table, array $set, array $where): bool
     {
+        $db = self::getConnection();
 
+        $setSql = [];
+        foreach ($set as $column => $value) {
+            $setSql[] = "$column = ?";
+        }
+
+        $whereSql = [];
+        foreach ($where as $column => $value) {
+            $whereSql[] = "$column = ?";
+        }
+
+        $sql = "UPDATE $table SET " . implode(', ', $setSql) . ' WHERE ' . implode(' AND ', $whereSql);
+
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->execute(array_merge(array_values($set), array_values($where)));
+            return true;
+        } catch (PDOException $e) {
+            setError(500, 'Update Error: ' . $e->getMessage());
+            return false;
+        }
     }
 
-    public static function delete(string $tableName): void
+    public static function delete(string $table, array $where): bool
     {
+        $db = self::getConnection();
 
+        $whereSql = [];
+        foreach ($where as $column => $value) {
+            $whereSql[] = "$column = ?";
+        }
+
+        $sql = "DELETE FROM $table WHERE " . implode(' AND ', $whereSql);
+
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->execute(array_values($where));
+            return true;
+        } catch (PDOException $e) {
+            setError(500, 'Delete Error: ' . $e->getMessage());
+            return false;
+        }
     }
 
     private function __clone()
     {
     }
+
     private function __wakeup()
     {
     }

@@ -4,13 +4,8 @@ include '_init_.php';
 setMethod('GET');
 $id = authorization();
 
-$user = db()->prepare('SELECT * FROM users WHERE id = ?');
-$user->execute([$id]);
-$user = $user->fetch();
-
-$auth = db()->prepare('SELECT * FROM users_auth WHERE user_id = ?');
-$auth->execute([$id]);
-$auth = $auth->fetch();
+$user = Database::select(table: 'users', where: 'id = ?', value: [$id]);
+$auth = Database::select(table: 'users', where: 'user_id = ?', value: [$id]);
 
 exit(json_encode([
     'id' => $user['id'],
