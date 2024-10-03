@@ -6,16 +6,16 @@ $response = '';
 
 setMethod('POST');
 $id = authorization();
-$email = param('email');
+$data = param('email');
 $code = param('code');
 
 
 $query = $pdo->prepare('SELECT * FROM users_verify_code WHERE data = ? AND code = ?');
-$query->execute([$email, $code]);
+$query->execute([$data, $code]);
 
 if ($query->fetch()) {
     $updateEmail = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
-    $updateEmail->execute([$email, $id]);
-    exit(json_encode(['message' => 'ایمیل شما با موفقیت تغییر کرد', 'email' => $email]));
+    $updateEmail->execute([$data, $id]);
+    exit(json_encode(['message' => 'ایمیل شما با موفقیت تغییر کرد', 'email' => $data]));
 }
 setError(400, 'Invalid Verify Code');
