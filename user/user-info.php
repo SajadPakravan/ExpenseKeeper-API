@@ -1,15 +1,14 @@
 <?php
-global $db;
-include '../tools/db_connect.php';
+include '_init_.php';
 
 setMethod('GET');
 $id = authorization();
 
-$user = $db->prepare('SELECT * FROM users WHERE id = ?');
+$user = db()->prepare('SELECT * FROM users WHERE id = ?');
 $user->execute([$id]);
 $user = $user->fetch();
 
-$auth = $db->prepare('SELECT * FROM users_auth WHERE user_id = ?');
+$auth = db()->prepare('SELECT * FROM users_auth WHERE user_id = ?');
 $auth->execute([$id]);
 $auth = $auth->fetch();
 

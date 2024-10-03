@@ -1,6 +1,5 @@
 <?php
-global $db;
-include '../tools/db_connect.php';
+include '_init_.php';
 
 setMethod('POST');
 authorization();
