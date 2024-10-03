@@ -74,7 +74,7 @@ function createTableUsersVerifyCode($pdo): string
 {
     $pdo->exec('CREATE TABLE IF NOT EXISTS users_verify_code (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        data VARCHAR(30) UNIQUE,
+        data VARCHAR(30) UNIQUE NOT NULL,
         code CHAR(6) NOT NULL,
         create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci');
