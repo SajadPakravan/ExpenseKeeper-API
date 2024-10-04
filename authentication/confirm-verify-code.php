@@ -6,12 +6,11 @@ $data = param('data');
 $code = param('code');
 $password = param('password');
 
+$checkCode = Database::select(table: 'users_verify_code', where: 'data = ? AND code = ?', value: [$data, $code]);
 
-$checkCode = db()->prepare('SELECT * FROM users_verify_code WHERE data = ? AND code = ?');
-$checkCode->execute([$data, $code]);
-
-if ($checkCode->fetch()) {
-    $user = db()->prepare('SELECT * FROM users WHERE email = ?');
+if (!empty($checkCode)) {
+    $user = Database::select(table: 'users',where: 'email = ?', value: [$checkCode['email']]);
+        db()->prepare('SELECT * FROM users WHERE email = ?');
     $user->execute([$code]);
     $user->fetch();
     $hashPass = password_hash($password, PASSWORD_DEFAULT);
