@@ -56,9 +56,9 @@ function authorization(): int
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
 
-    $userToken = Database::select(table: 'users_token', where: 'token = ? AND expire_at > ' . date('Y-m-d H:i:s'), value: [$token]);
+    $userToken = Database::select(table: 'users_token', where: "token = ? AND expire_at > date('Y-m-d H:i:s')", value: [$token]);
     if (empty($userToken)) setError(401, 'Unauthorized');
-    return $userToken['user_id'];
+    return $userToken[0]['user_id'];
 }
 
 function upload($file, $type, $name, $size, $folder): string
