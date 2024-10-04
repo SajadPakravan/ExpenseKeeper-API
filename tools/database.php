@@ -126,7 +126,7 @@ class Database
     {
     }
 
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 }
