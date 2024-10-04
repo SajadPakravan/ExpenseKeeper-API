@@ -79,7 +79,7 @@ class Database
         }
     }
 
-    public static function update(string $table, array $set, array $where): bool
+    public static function update(string $table, array $set, array $where): void
     {
         $db = self::getConnection();
 
@@ -98,10 +98,8 @@ class Database
         try {
             $stmt = $db->prepare($sql);
             $stmt->execute(array_merge(array_values($set), array_values($where)));
-            return true;
         } catch (PDOException $e) {
             setError(500, 'Update Error: ' . $e->getMessage());
-            return false;
         }
     }
 
