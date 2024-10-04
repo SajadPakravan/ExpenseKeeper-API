@@ -38,7 +38,7 @@ function createToken($id): string
     } catch (RandomException $e) {
         echo $e;
     }
-    $expire_at = time() + (60 * 60);
+    $expire_at = date('Y-m-d H:i:s', time() + (60 * 60));
     Database::insert(table: 'users_token', data: [
         'user_id' => $id,
         'token' => $token,
@@ -56,7 +56,7 @@ function authorization(): int
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
 
-    $userToken = Database::select(table: 'users_token', where: 'token = ? AND expire_at > NOW()', value: [$token]);
+    $userToken = Database::select(table: 'users_token', where: 'token = ? AND expire_at > ' . date('Y-m-d H:i:s'), value: [$token]);
     if (empty($userToken)) setError(401, 'Unauthorized');
     return $userToken['user_id'];
 }

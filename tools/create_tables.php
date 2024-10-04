@@ -19,7 +19,7 @@ $messages[] = Database::createTable('users_auth', [
     'password' => 'VARCHAR(255) NOT NULL',
     'login_time' => 'DATETIME NOT NULL',
     'Logout_time' => 'DATETIME NULL',
-    'status' => 'TINYINT(1)',
+    'status' => 'TINYINT(1) NOT NULL',
     'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE',
 ]);
 

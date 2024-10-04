@@ -11,6 +11,7 @@ class Database
         try {
             $this->pdo = new PDO(DSN, USER, PASS);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->exec("SET NAMES 'utf8mb4'");
         } catch (PDOException $e) {
             setError(500, 'Connection Failed | ' . $e->getMessage());
         }
