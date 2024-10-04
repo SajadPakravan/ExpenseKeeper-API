@@ -105,7 +105,7 @@ class Database
         }
     }
 
-    public static function delete(string $table, array $where): bool
+    public static function delete(string $table, array $where): void
     {
         $db = self::getConnection();
 
@@ -119,10 +119,8 @@ class Database
         try {
             $stmt = $db->prepare($sql);
             $stmt->execute(array_values($where));
-            return true;
         } catch (PDOException $e) {
             setError(500, 'Delete Error: ' . $e->getMessage());
-            return false;
         }
     }
 

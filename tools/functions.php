@@ -1,7 +1,9 @@
 <?php
+
 use Random\RandomException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
 require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
@@ -28,12 +30,8 @@ function param($name): string
 
 function createToken($id): string
 {
-    $checkUserToken = db()->prepare('SELECT * FROM users_token WHERE user_id = ?');
-    $checkUserToken->execute([$id]);
-    if ($checkUserToken->fetch()) {
-        $deleteToken = db()->prepare('DELETE FROM users_token WHERE user_id = ?');
-        $deleteToken->execute([$id]);
-    }
+    $checkUserToken = Database::select(table: 'users_token', where: 'user_id = ?', value: [$id]);
+    if (!empty($checkUserToken)) Database::delete(table: 'users_token', where: ['user_id' => $id]);
 
     try {
         $token = bin2hex(random_bytes(16));
@@ -41,8 +39,11 @@ function createToken($id): string
         echo $e;
     }
     $expire_at = time() + (60 * 60);
-    $insertToken = db()->prepare('INSERT INTO users_token (user_id, token, expire_at) VALUES (?, ?, FROM_UNIXTIME(?))');
-    $insertToken->execute([$id, $token, $expire_at]);
+    Database::insert(table: 'users_token', data: [
+        'user_id' => $id,
+        'token' => $token,
+        'expire_at' => $expire_at,
+    ]);
     return $token;
 }
 
