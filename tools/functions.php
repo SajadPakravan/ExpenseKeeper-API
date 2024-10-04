@@ -8,10 +8,12 @@ require 'PHPMailer/src/Exception.php';
 require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
-function setError(int $code, string $error): void
-{
-    http_response_code($code);
-    exit(json_encode(['error' => $error]));
+if (!function_exists('setError')) {
+    function setError(int $code, string $error): void
+    {
+        http_response_code($code);
+        exit(json_encode(['error' => $error]));
+    }
 }
 
 function setMethod(string $method): void
