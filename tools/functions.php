@@ -56,11 +56,8 @@ function authorization(): int
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
 
-    $checkToken = db()->prepare('SELECT * FROM users_token WHERE token = ? AND expire_at > NOW()');
-    $checkToken->execute([$token]);
-    $userToken = $checkToken->fetch();
-    if (!$userToken) setError(401, 'Unauthorized');
-
+    $userToken = Database::select(table: 'users_token', where: 'token = ? AND expire_at > NOW()', value: [$token]);
+    if (empty($userToken)) setError(401, 'Unauthorized');
     return $userToken['user_id'];
 }
 
@@ -133,17 +130,15 @@ function sendPhoneCode($phone): void
 
 function createVerifyCode($param): int
 {
-    $checkParam = db()->prepare('SELECT * FROM users_verify_code WHERE data = ?');
-    $checkParam->execute([$param]);
-    $checkParam = $checkParam->fetch();
-    if ($checkParam) {
-        $deleteCode = db()->prepare('DELETE FROM users_verify_code WHERE data = ?');
-        $deleteCode->execute([$param]);
-    }
+    $checkParam = Database::select(table: 'users_verify_code', where: 'data = ?', value: [$param]);
+    if (!empty($checkParam)) Database::delete(table: 'users_verify_code', where: ['data' => $param]);
 
     $code = rand(100000, 999999);
-    $insertCode = db()->prepare('INSERT INTO users_verify_code (data, code, create_at) VALUES (?, ?, NOW())');
-    $insertCode->execute([$param, $code]);
+    Database::insert(table: 'users_verify_code', data: [
+        'data' => $param,
+        'code' => $code,
+        'create_at' => date('Y-m-d H:i:s'),
+    ]);
     return $code;
 }
 
