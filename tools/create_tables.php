@@ -20,7 +20,7 @@ $messages[] = Database::createTable('users_auth', [
     'login_time' => 'DATETIME NOT NULL',
     'Logout_time' => 'DATETIME NULL',
     'status' => 'TINYINT(1) NOT NULL',
-    'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE',
+    'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
 ]);
 
 $messages[] = Database::createTable('users_token', [
@@ -28,7 +28,7 @@ $messages[] = Database::createTable('users_token', [
     'user_id' => 'INT UNIQUE NOT NULL',
     'token' => 'VARCHAR(255) UNIQUE NOT NULL',
     'expire_at' => 'DATETIME NOT NULL',
-    'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE',
+    'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
 ]);
 
 $messages[] = Database::createTable('users_verify_code', [
