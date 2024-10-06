@@ -38,12 +38,8 @@ function createToken($id): string
     } catch (RandomException $e) {
         echo $e;
     }
-    $expire_at = date('Y-m-d H:i:s', time() + (60 * 60));
-    Database::insert(table: 'users_token', data: [
-        'user_id' => $id,
-        'token' => $token,
-        'expire_at' => $expire_at,
-    ]);
+    date_default_timezone_set('Asia/Tehran');
+    Database::insert(table: 'users_token', data: ['user_id' => $id, 'token' => $token, 'create_at' => date('Y-m-d H:i:s')]);
     return $token;
 }
 
@@ -56,7 +52,7 @@ function authorization(): int
     $authHeader = $headers['Authorization'];
     $token = str_replace('Bearer ', '', $authHeader);
 
-    $userToken = Database::select(table: 'users_token', where: "token = ? AND expire_at > date('Y-m-d H:i:s')", value: [$token]);
+    $userToken = Database::select(table: 'users_token', where: 'token = ?', value: [$token]);
     if (empty($userToken)) setError(401, 'Unauthorized');
     return $userToken[0]['user_id'];
 }
@@ -81,7 +77,6 @@ function upload($file, $type, $name, $size, $folder): string
 function sendEmailCode($email): void
 {
     $code = createVerifyCode($email);
-    date_default_timezone_set('Asia/Tehran');
     $bodyView = file_get_contents('../views/email-verify-code-view.html');
     try {
         $mail = new PHPMailer(true);
@@ -134,10 +129,11 @@ function createVerifyCode($param): int
     if (!empty($checkParam)) Database::delete(table: 'users_verify_code', where: ['data' => $param]);
 
     $code = rand(100000, 999999);
+    date_default_timezone_set('Asia/Tehran');
     Database::insert(table: 'users_verify_code', data: [
         'data' => $param,
         'code' => $code,
-        'create_at' => date('Y-m-d H:i:s'),
+        'create_at' => date('Y-m-d<>H:i:s'),
     ]);
     return $code;
 }
