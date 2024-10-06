@@ -9,7 +9,7 @@ $auth = Database::select(table: 'users_auth', where: 'username = ?', value: [$us
 if (!empty($auth)) {
     if (password_verify($password, $auth[0]['password'])) {
         date_default_timezone_set('Asia/Tehran');
-        Database::update(table: 'users_auth', set: ['login_time' => date('Y-m-d<>H:i:s')], where: ['username' => $username]);
+        Database::update(table: 'users_auth', set: ['login_time' => date('Y-m-d H:i:s')], where: ['username' => $username]);
         $token = createToken($auth[0]['user_id']);
         exit(json_encode(['message' => 'ورود شما با موفقیت انجام شد', 'token' => $token]));
     }

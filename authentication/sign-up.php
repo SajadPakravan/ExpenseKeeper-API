@@ -16,7 +16,7 @@ Database::insert(table: 'users', data: [
     'email' => null,
     'phone' => null,
     'avatar' => DefaultAvatarUrl,
-    'create_at' => date('Y-m-d<>H:i:s'),
+    'create_at' => date('Y-m-d H:i:s'),
 ]);
 
 $userId = Database::getConnection()->lastInsertId();
@@ -25,7 +25,7 @@ Database::insert(table: 'users_auth', data: [
     'user_id' => $userId,
     'username' => $username,
     'password' => $hashPass,
-    'login_time' => date('Y-m-d<>H:i:s'),
+    'login_time' => date('Y-m-d H:i:s'),
 ]);
 
 $token = createToken($userId);

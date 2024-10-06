@@ -133,7 +133,7 @@ function createVerifyCode($param): int
     Database::insert(table: 'users_verify_code', data: [
         'data' => $param,
         'code' => $code,
-        'create_at' => date('Y-m-d<>H:i:s'),
+        'create_at' => date('Y-m-d H:i:s'),
     ]);
     return $code;
 }
