@@ -50,6 +50,7 @@ $messages[] = Database::createTable('incomes_costs', [
 $messages[] = Database::createTable('bank_sms', [
     'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
     'user_id' => 'INT UNIQUE NOT NULL',
+    'bank' => 'VARCHAR(30) NOT NULL',
     'title' => 'VARCHAR(30) NOT NULL',
     'description' => 'VARCHAR(50) NOT NULL',
     'amount' => 'DECIMAL(12,1) NOT NULL',
