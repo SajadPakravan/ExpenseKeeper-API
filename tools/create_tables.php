@@ -36,4 +36,22 @@ $messages[] = Database::createTable('users_verify_code', [
     'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
 ]);
 
+$messages[] = Database::createTable('costs', [
+    'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
+    'user_id' => 'INT UNIQUE NOT NULL',
+    'title' => 'VARCHAR(30) NOT NULL',
+    'description' => 'VARCHAR(50) NOT NULL',
+    'amount' => 'DECIMAL(12,1) NOT NULL',
+    'type' => "ENUM('INCOME', 'COST') DEFAULT 'COST'",
+    'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
+    'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
+]);
+
+$messages[] = Database::createTable('sms', [
+    'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
+    'data' => 'VARCHAR(30) UNIQUE NOT NULL',
+    'code' => 'CHAR(6) NOT NULL',
+    'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
+]);
+
 echo json_encode(['message' => $messages]);
