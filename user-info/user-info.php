@@ -1,7 +1,7 @@
 <?php
 include '_init_.php';
 
-setMethod('GET');
+if (!(setMethod('GET'))) setError(405, 'Wrong Method');
 $id = authorization();
 
 $user = Database::select(table: 'users', where: 'id = ?', value: [$id]);

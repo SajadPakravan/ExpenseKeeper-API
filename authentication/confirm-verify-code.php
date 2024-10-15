@@ -1,7 +1,7 @@
 <?php
 include '_init_.php';
 
-setMethod('POST');
+if (!(setMethod('POST'))) setError(405, 'Wrong Method');
 $data = param('data');
 $code = param('code');
 $password = param('password');

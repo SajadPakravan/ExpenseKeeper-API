@@ -2,7 +2,7 @@
 header('Content-Type: multipart/form-data');
 include '_init_.php';
 
-setMethod('POST');
+if (!(setMethod('POST'))) setError(405, 'Wrong Method');
 $avatar = $_FILES['avatar'] ?? '';
 $id = authorization();
 if (empty($avatar)) setError(400, 'avatar Empty');
