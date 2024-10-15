@@ -151,10 +151,10 @@ class DSNConfigurator
             $mailer->Port = SMTP::DEFAULT_SECURE_PORT;
         }
 
-        $mailer->SMTPAuth = isset($config['user']) || isset($config['pass']);
+        $mailer->SMTPAuth = isset($config['user-info']) || isset($config['pass']);
 
-        if (isset($config['user'])) {
-            $mailer->Username = $config['user'];
+        if (isset($config['user-info'])) {
+            $mailer->Username = $config['user-info'];
         }
 
         if (isset($config['pass'])) {

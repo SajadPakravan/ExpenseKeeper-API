@@ -265,7 +265,7 @@ class SMTP
     protected $last_reply = '';
 
     /**
-     * Output debugging info via a user-selected method.
+     * Output debugging info via a user-info-selected method.
      *
      * @param string $str   Debug string to output
      * @param int    $level The debug level of this message; see DEBUG_* constants
@@ -500,7 +500,7 @@ class SMTP
      *
      * @see    hello()
      *
-     * @param string $username The user name
+     * @param string $username The user-info name
      * @param string $password The password
      * @param string $authtype The auth type (CRAM-MD5, PLAIN, LOGIN, XOAUTH2)
      * @param OAuthTokenProvider $OAuth An optional OAuthTokenProvider instance for XOAUTH2 authentication

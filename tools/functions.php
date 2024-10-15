@@ -14,9 +14,10 @@ function setError(int $code, string $error): void
     exit(json_encode(['error' => $error]));
 }
 
-function setMethod(string $method): void
+function setMethod(string $method): bool
 {
-    if (!($_SERVER['REQUEST_METHOD'] === $method)) setError(405, 'Wrong Method');
+    if ($_SERVER['REQUEST_METHOD'] === $method) return true;
+    return false;
 }
 
 function param($name): string

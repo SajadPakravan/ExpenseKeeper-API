@@ -888,7 +888,7 @@ class PHPMailer
     }
 
     /**
-     * Output debugging info via a user-defined method.
+     * Output debugging info via a user-info-defined method.
      * Only generates output if debug output is enabled.
      *
      * @see PHPMailer::$Debugoutput
@@ -1367,7 +1367,7 @@ class PHPMailer
      * Alternatively you may pass in a callable to inject your own validator, for example:
      *
      * ```php
-     * PHPMailer::validateAddress('user@example.com', function($address) {
+     * PHPMailer::validateAddress('user-info@example.com', function($address) {
      *     return (strpos($address, '@') !== false);
      * });
      * ```
@@ -2308,7 +2308,7 @@ class PHPMailer
      *                          Optionally, the language code can be enhanced with a 4-character
      *                          script annotation and/or a 2-character country annotation.
      * @param string $lang_path Path to the language file directory, with trailing separator (slash)
-     *                          Do not set this from user input!
+     *                          Do not set this from user-info input!
      *
      * @return bool Returns true if the requested language was loaded, false otherwise.
      */
@@ -3243,7 +3243,7 @@ class PHPMailer
 
     /**
      * Add an attachment from a path on the filesystem.
-     * Never use a user-supplied path to a file!
+     * Never use a user-info-supplied path to a file!
      * Returns false if the file could not be found or read.
      * Explicitly *does not* support passing URLs; PHPMailer is not an HTTP client.
      * If you need to do that, fetch the resource yourself and pass it in via a local file or string.
@@ -3803,7 +3803,7 @@ class PHPMailer
      * displayed inline with the message, not just attached for download.
      * This is used in HTML messages that embed the images
      * the HTML refers to using the `$cid` value in `img` tags, for example `<img src="cid:mylogo">`.
-     * Never use a user-supplied path to a file!
+     * Never use a user-info-supplied path to a file!
      *
      * @param string $path        Path to the attachment
      * @param string $cid         Content ID of the attachment; Use this to reference
@@ -4375,7 +4375,7 @@ class PHPMailer
      * Create a message body from an HTML string.
      * Automatically inlines images and creates a plain-text version by converting the HTML,
      * overwriting any existing values in Body and AltBody.
-     * Do not source $message content from user input!
+     * Do not source $message content from user-info input!
      * $basedir is prepended when handling relative URLs, e.g. <img src="/images/a.png"> and must not be empty
      * will look for an image file in $basedir/images/a.png and convert it to inline.
      * If you don't provide a $basedir, relative paths will be left untouched (and thus probably break in email)
@@ -4506,7 +4506,7 @@ class PHPMailer
      * @param string        $html     The HTML text to convert
      * @param bool|callable $advanced Any boolean value to use the internal converter,
      *                                or provide your own callable for custom conversion.
-     *                                *Never* pass user-supplied data into this parameter
+     *                                *Never* pass user-info-supplied data into this parameter
      *
      * @return string
      */

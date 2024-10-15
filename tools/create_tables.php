@@ -36,7 +36,7 @@ $messages[] = Database::createTable('users_verify_code', [
     'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
 ]);
 
-$messages[] = Database::createTable('incomes_costs', [
+$messages[] = Database::createTable('transaction', [
     'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
     'user_id' => 'INT UNIQUE NOT NULL',
     'title' => 'VARCHAR(30) NOT NULL',

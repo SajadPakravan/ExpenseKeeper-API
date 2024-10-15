@@ -50,7 +50,7 @@ class OAuth implements OAuthTokenProvider
     protected $oauthToken;
 
     /**
-     * The user's email address, usually used as the login ID
+     * The user-info's email address, usually used as the login ID
      * and also the from address when sending email.
      *
      * @var string
@@ -129,7 +129,7 @@ class OAuth implements OAuthTokenProvider
         }
 
         return base64_encode(
-            'user=' .
+            'user-info=' .
             $this->oauthUserEmail .
             "\001auth=Bearer " .
             $this->oauthToken .
