@@ -13,28 +13,30 @@ $title = $description = $amount = $type = $create_at = '';
 switch ($method) {
     case 'GET':
     {
-        $page = intval(param('page', false)) ?? 1;
-        $perPage = intval(param('per-page', false)) ?? 10;
+        $page = $_GET['page'] ?? 1;
+        $perPage = $_GET['per-page'] ?? 10;
 
-        $offset = ($page - 1) * $perPage;
+        $offset = (intval($page) - 1) * intval($perPage);
 
         $transaction = Database::select(
             table: 'transaction',
-            where: 'user_id = ? LIMIT ? OFFSET ?',
-            value: [$id, $perPage, $offset]
+            where: "user_id = ? LIMIT $perPage OFFSET $offset",
+            value: [$id]
         );
 
         $data = [];
-        foreach ($transaction as $t) {
-            $data[] = [
-                'id' => $t['id'],
-                'user_id' => $t['user_id'],
-                'title' => $t['title'],
-                'description' => $t['description'],
-                'amount' => $t['amount'],
-                'type' => $t['type'],
-                'create_at' => $t['create_at'],
-            ];
+        if (!empty($transaction)) {
+            foreach ($transaction as $t) {
+                $data[] = [
+                    'id' => $t['id'],
+                    'user_id' => $t['user_id'],
+                    'title' => $t['title'],
+                    'description' => $t['description'],
+                    'amount' => $t['amount'],
+                    'type' => $t['type'],
+                    'create_at' => $t['create_at'],
+                ];
+            }
         }
         exit(json_encode($data));
     }
