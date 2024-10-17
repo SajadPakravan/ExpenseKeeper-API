@@ -5,9 +5,6 @@ $id = authorization();
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-$uri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
-$t_id = $uri[count($uri) - 1];
-
 $title = $description = $amount = $type = $create_at = '';
 
 switch ($method) {
@@ -55,6 +52,7 @@ switch ($method) {
     }
     case 'PUT':
     {
+        $transactionID = $_GET['id'] ?? setError(400, 'id Empty');
         setParam();
         Database::update(table: 'transaction', set: [
             'title' => $title,
@@ -62,12 +60,13 @@ switch ($method) {
             'amount' => $amount,
             'type' => $type,
             'create_at' => $create_at,
-        ], where: ['id' => $t_id]);
+        ], where: ['id' => $transactionID]);
         exit(json_encode(['message' => 'تراکنش شما با موفقیت بروزرسانی شد']));
     }
     case 'DELETE':
     {
-        Database::delete(table: 'transaction', where: ['id' => $t_id]);
+        $transactionID = $_GET['id'] ?? setError(400, 'id Empty');
+        Database::delete(table: 'transaction', where: ['id' => $transactionID]);
         exit(json_encode(['message' => 'تراکنش شما با موفقیت حذف شد']));
     }
     default:
@@ -82,5 +81,6 @@ function setParam(): void
     $description = param('description', false);
     $amount = param('amount');
     $type = param('type');
+    if ($type !== 'COST' && $type !== 'INCOME') setError(400, 'Wrong Type | COST or INCOME');
     $create_at = param('create_at');
 }
