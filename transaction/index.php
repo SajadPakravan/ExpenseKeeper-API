@@ -44,7 +44,7 @@ switch ($method) {
     {
         setParam();
         Database::insert(table: 'transaction', data: [
-            'user_id' => $t_id,
+            'user_id' => $id,
             'title' => $title,
             'description' => $description,
             'amount' => $amount,

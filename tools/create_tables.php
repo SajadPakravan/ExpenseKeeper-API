@@ -38,25 +38,25 @@ $messages[] = Database::createTable('users_verify_code', [
 
 $messages[] = Database::createTable('transaction', [
     'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
-    'user_id' => 'INT UNIQUE NOT NULL',
+    'user_id' => 'INT NOT NULL',
     'title' => 'VARCHAR(30) NOT NULL',
-    'description' => 'VARCHAR(50) NOT NULL',
+    'description' => 'VARCHAR(50) NULL',
     'amount' => 'DECIMAL(12,1) NOT NULL',
-    'type' => "ENUM('INCOME', 'COST') DEFAULT 'COST' NOT NULL",
-    'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
+    'type' => "ENUM('INCOME', 'COST') NOT NULL",
+    'create_at' => 'TIMESTAMP NOT NULL',
     'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
 ]);
 
 $messages[] = Database::createTable('bank_sms', [
     'id' => 'INT AUTO_INCREMENT PRIMARY KEY',
-    'user_id' => 'INT UNIQUE NOT NULL',
+    'user_id' => 'INT NOT NULL',
     'bank' => 'VARCHAR(30) NOT NULL',
     'title' => 'VARCHAR(30) NOT NULL',
-    'description' => 'VARCHAR(50) NOT NULL',
+    'description' => 'VARCHAR(50) NULL',
     'amount' => 'DECIMAL(12,1) NOT NULL',
     'balance' => 'DECIMAL(12,1) NOT NULL',
-    'type' => "ENUM('INCOME', 'COST') DEFAULT 'COST' NOT NULL",
-    'create_at' => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL',
+    'type' => "ENUM('INCOME', 'COST') NOT NULL",
+    'create_at' => 'TIMESTAMP NOT NULL',
     'FOREIGN KEY' => '(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE',
 ]);
 
