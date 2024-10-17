@@ -20,12 +20,12 @@ function setMethod(string $method): bool
     return false;
 }
 
-function param($name): string
+function param($name, $nullCheck = true): string
 {
     $data = json_decode(file_get_contents('php://input'), true);
     $value = $data[$name] ?? '';
     $value = trim($value);
-    if (empty($value)) setError(400, "$name Empty");
+    if ($nullCheck && empty($value)) setError(400, "$name Empty");
     return $value;
 }
 
