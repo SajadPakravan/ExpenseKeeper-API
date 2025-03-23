@@ -66,9 +66,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function signOut(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'خروج موفقیت‌آمیز بود.'
