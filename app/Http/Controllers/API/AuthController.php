@@ -35,7 +35,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'ثبت‌نام موفقیت‌آمیز بود.',
                 'token'   => $token
-            ], 201);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'خطایی رخ داد. لطفاً دوباره تلاش کنید.',
