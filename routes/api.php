@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\EmailController;
 use App\Http\Controllers\API\UserController;
 
 Route::post('/auth/sign-up', [AuthController::class, 'signUp']);
@@ -16,4 +17,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/email', [UserController::class, 'email']);
     Route::post('/user/phone', [UserController::class, 'phone']);
     Route::post('/user/avatar', [UserController::class, 'avatar']);
+    Route::post('/email/verify-code', [EmailController::class, 'sendVerifyCode']);
 });

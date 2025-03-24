@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Users;
 use App\Models\UsersAuth;
+use App\Models\UsersVerify;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -66,14 +67,25 @@ class UserController extends Controller
         $user = Users::where('id', $userAuth->user_id)->first();
 
         $data = $request->validate([
-            'email' => 'required|string|unique:users,email',
+            'email' => 'required|email',
+            'code' => 'required|integer',
         ]);
+
+        $verification = UsersVerify::where('data', $data['email'])
+            ->where('code', $data['code'])
+            ->first();
+
+        if (!$verification) {
+            return response()->json(['message' => 'کد تأیید اشتباه است'], 400);
+        }
 
         $user->update(['email' => $data['email']]);
 
+        $verification->delete();
+
         return response()->json([
             'message' => 'ایمیل با موفقیت تغییر کرد',
-            'username' => $user->email,
+            'email' => $user->email,
         ]);
     }
     public function phone(Request $request) {}
