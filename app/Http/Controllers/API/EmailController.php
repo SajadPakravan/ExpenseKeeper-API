@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\VerifyEmail;
 use App\Models\UsersVerify;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -22,10 +23,7 @@ class EmailController extends Controller
             ['code' => $verificationCode]
         );
 
-        Mail::raw("کد تأیید شما: $verificationCode", function ($message) use ($data) {
-            $message->to($data['email'])
-                ->subject('کد تأیید ایمیل');
-        });
+        Mail::to($data['email'])->send(new VerifyEmail($verificationCode));
 
         return response()->json([
             'message' => 'کد تأیید به ایمیل شما ارسال شد',
