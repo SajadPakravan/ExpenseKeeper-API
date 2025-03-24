@@ -88,6 +88,33 @@ class UserController extends Controller
             'email' => $user->email,
         ]);
     }
-    public function phone(Request $request) {}
+
+    public function phone(Request $request)
+    {
+        $userAuth = $request->user();
+        $user = Users::where('id', $userAuth->user_id)->first();
+
+        $data = $request->validate([
+            'phone' => 'required|string',
+            'code' => 'required|integer',
+        ]);
+
+        $verification = UsersVerify::where('data', $data['phone'])
+            ->where('code', $data['code'])
+            ->first();
+
+        if (!$verification) {
+            return response()->json(['message' => 'کد تأیید اشتباه است'], 400);
+        }
+
+        $user->update(['phone' => $data['phone']]);
+
+        $verification->delete();
+
+        return response()->json([
+            'message' => 'شماره تلفن همراه با موفقیت تغییر کرد',
+            'phone' => $user->phone,
+        ]);
+    }
     public function avatar(Request $request) {}
 }
