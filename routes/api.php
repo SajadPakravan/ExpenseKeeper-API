@@ -20,4 +20,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/phone/verify-code', [PhoneController::class, 'sendVerifyCode']);
     Route::post('/user/phone', [UserController::class, 'phone']);
     Route::post('/user/avatar', [UserController::class, 'avatar']);
+    Route::post('/user/password', [UserController::class, 'password']);
 });

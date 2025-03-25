@@ -7,6 +7,7 @@ use App\Models\Users;
 use App\Models\UsersAuth;
 use App\Models\UsersVerify;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -124,6 +125,9 @@ class UserController extends Controller
 
         $data = $request->validate([
             'avatar' => 'required|image|mimes:jpg,png|max:1024',
+        ], [
+            'mimes' => 'فرمت تصویر باید JPG یا PNG باشد',
+            'max' => 'حجم تصویر نباید بیشتر از 1 مگابایت باشد',
         ]);
 
         $file = $request->file('avatar');
@@ -137,7 +141,22 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'تصویر پروفایل با موفقیت آپلود شد',
-            'avatar_url' => url($path . $fileName),
+            'avatar' => url($path . $fileName),
+        ]);
+    }
+
+    public function password(Request $request)
+    {
+        $userAuth = $request->user();
+
+        $data = $request->validate([
+            'password' => 'required|min:8'
+        ]);
+
+        $userAuth->update(['password' => Hash::make($data['password'])]);
+
+        return response()->json([
+            'message' => 'کلمه عبور با موفقیت تغییر کرد',
         ]);
     }
 }
