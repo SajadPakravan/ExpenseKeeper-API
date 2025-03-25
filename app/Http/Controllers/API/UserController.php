@@ -116,5 +116,28 @@ class UserController extends Controller
             'phone' => $user->phone,
         ]);
     }
-    public function avatar(Request $request) {}
+
+    public function avatar(Request $request)
+    {
+        $userAuth = $request->user();
+        $user = Users::where('id', $userAuth->user_id)->first();
+
+        $data = $request->validate([
+            'avatar' => 'required|image|mimes:jpg,png|max:1024',
+        ]);
+
+        $file = $request->file('avatar');
+        $extension = $file->getClientOriginalExtension();
+        $fileName = $user->id . '.' . $extension;
+
+        $path = 'uploads/avatars/';
+        $file->move(public_path($path), $fileName);
+
+        $user->update(['avatar' => url($path . $fileName)]);
+
+        return response()->json([
+            'message' => 'تصویر پروفایل با موفقیت آپلود شد',
+            'avatar_url' => url($path . $fileName),
+        ]);
+    }
 }
