@@ -150,8 +150,13 @@ class UserController extends Controller
         $userAuth = $request->user();
 
         $data = $request->validate([
+            'current_password' => 'required',
             'password' => 'required|min:8'
         ]);
+
+        if (!Hash::check($data['current_password'], $userAuth->password)) {
+            return response()->json(['message' => 'کلمه عبور فعلی اشتباه است'], 401);
+        }
 
         $userAuth->update(['password' => Hash::make($data['password'])]);
 
