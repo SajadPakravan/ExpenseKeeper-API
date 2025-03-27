@@ -34,10 +34,8 @@ class TransactionController extends Controller
         ], 200);
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        $userAuth = $request->user();
-
         $data = $request->validate([
             'title'     => 'required|string',
             'amount' => 'required|decimal:0',
@@ -45,11 +43,48 @@ class TransactionController extends Controller
             'description' => 'nullable|string',
             'created_at' => 'required|date_format:Y-m-d H:i:s',
         ]);
+
+        $transaction = Transactions::find($id);
+
+        $transaction->update($data);
+
+        return response()->json([
+            'message' => 'تراکنش با موفقیت تغییر کرد',
+        ], 200);
     }
 
-    public function getAll(Request $request) {}
+    public function getAll(Request $request)
+    {
+        $userAuth = $request->user();
 
-    public function getOne(Request $request) {}
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 10);
 
-    public function delete(Request $request) {}
+        $transactions = Transactions::where('user_id', $userAuth->user_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($transactions, 200);
+    }
+
+    public function getOne($id, Request $request)
+    {
+        $transactions = Transactions::where('id', $id)->first();
+
+        return response()->json($transactions, 200);
+    }
+
+    public function delete(Request $request)
+    {
+        $data = $request->validate([
+            'transaction_ids' => 'required|array',
+            'transaction_ids.*' => 'integer|exists:transactions,id'
+        ]);
+    
+        Transactions::whereIn('id', $data['transaction_ids'])->delete();
+    
+        return response()->json([
+            'message' => 'تراکنش‌های مورد نظر با موفقیت حذف شدند',
+        ], 200);
+    }
 }
