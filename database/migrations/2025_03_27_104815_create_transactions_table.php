@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('title');
-            $table->decimal('amount', 20, 1);
+            $table->decimal('amount', 20, 0);
             $table->enum('type', ['income', 'cost']);
             $table->text('description')->nullable();
             $table->timestamp('created_at');

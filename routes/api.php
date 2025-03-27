@@ -23,9 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/phone', [UserController::class, 'phone']);
     Route::post('/user/avatar', [UserController::class, 'avatar']);
     Route::post('/user/password', [UserController::class, 'password']);
-    Route::post('/transaction', [TransactionController::class, 'create']);
-    Route::put('/transaction/{id}', [TransactionController::class, 'update']);
-    Route::get('/transaction', [TransactionController::class, 'getAll']);
-    Route::get('/transaction{id}', [TransactionController::class, 'getOne']);
-    Route::delete('/transaction/{id}', [TransactionController::class, 'delete']);
+    Route::post('/transactions', [TransactionController::class, 'create']);
+    Route::put('/transactions/{id}', [TransactionController::class, 'update']);
+    Route::get('/transactions', [TransactionController::class, 'getAll']);
+    Route::get('/transactions/{id}', [TransactionController::class, 'getOne']);
+    Route::delete('/transactions/{id}', [TransactionController::class, 'delete']);
 });
