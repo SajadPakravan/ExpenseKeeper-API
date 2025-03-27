@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\EmailController;
 use App\Http\Controllers\API\PhoneController;
+use App\Http\Controllers\API\transaction\TransactionController;
 use App\Http\Controllers\API\UserController;
 
 Route::post('/auth/sign-up', [AuthController::class, 'signUp']);
@@ -22,4 +23,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/phone', [UserController::class, 'phone']);
     Route::post('/user/avatar', [UserController::class, 'avatar']);
     Route::post('/user/password', [UserController::class, 'password']);
+    Route::post('/transaction', [TransactionController::class, 'create']);
+    Route::put('/transaction/{id}', [TransactionController::class, 'update']);
+    Route::get('/transaction', [TransactionController::class, 'getAll']);
+    Route::get('/transaction{id}', [TransactionController::class, 'getOne']);
+    Route::delete('/transaction/{id}', [TransactionController::class, 'delete']);
 });
